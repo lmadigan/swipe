@@ -1,5 +1,8 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet,
+  Text, View,
+  PanResponder } from 'react-native';
+import { Card, Button } from 'react-native-elements';
 import Deck from './src/Deck';
 
 const DATA = [
@@ -22,18 +25,52 @@ const DATA = [
 ];
 
 
-export default class App extends React.Component {
+export default class App extends Component {
+  constructor(props) {
+    super(props);
+
+    const panResponder = PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
+      //this determines if a touch event clicks a component on screen will this
+      //panresponder be responsible for response
+      onPanResponderMove: (event, gesture) => {
+        console.log(gesture);
+      },
+      //true callback called anytime a component starts to move around screen
+      onPanResponderRelease: () => {}
+      //called anytime a user presses down then lets go
+    });
+
+    this.state = { panResponder };
+  }
+
   renderCard(item) {
-    return(
-      <Text>{item.text}</Text>
+    return (
+      <Card
+        key={item.id}
+        title={item.text}
+        image={{ uri: item.uri }}
+      >
+        <Text style={{ marginBottom: 10 }}>
+          Can I customize the card further.
+        </Text>
+        <Button
+          icon={{name: 'code'}}
+          backgroundColor='#03A9F4'
+          title="View Now!"
+        />
+      </Card>
     );
   }
 
   render() {
     return (
-      <View style={styles.container}>
-        <Deck data={DATA} renderCard={this.renderCard}/>
-      </View>
+        <View style={styles.container}>
+          <Deck
+          data={DATA}
+          renderCard={this.renderCard}/>
+        </View>
+
     );
   }
 }

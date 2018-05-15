@@ -26,24 +26,7 @@ const DATA = [
 
 
 export default class App extends Component {
-  constructor(props) {
-    super(props);
-
-    const panResponder = PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      //this determines if a touch event clicks a component on screen will this
-      //panresponder be responsible for response
-      onPanResponderMove: (event, gesture) => {
-        console.log(gesture);
-      },
-      //true callback called anytime a component starts to move around screen
-      onPanResponderRelease: () => {}
-      //called anytime a user presses down then lets go
-    });
-
-    this.state = { panResponder };
-  }
-
+  
   renderCard(item) {
     return (
       <Card

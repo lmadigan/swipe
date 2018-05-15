@@ -27,12 +27,27 @@ const DATA = [
 
 export default class App extends Component {
 
-  onSwipeRight(item) {
+  // onSwipeRight(item) {
+  //
+  // }
+  //
+  // onSwipeLeft(item) {
+  //
+  // }
 
-  }
-
-  onSwipeLeft(item) {
-    
+  renderNoMoreCards() {
+    return(
+      <Card title="All Done!">
+        <Text style={{ marginBottom: 10}}>
+          There is no more content here!
+        </Text>
+        <Button
+          backgroundColor="#03A9F4"
+          title="Get more!"
+          onPress={() => {}}
+          />
+      </Card>
+    );
   }
 
   renderCard(item) {
@@ -59,7 +74,8 @@ export default class App extends Component {
         <View style={styles.container}>
           <Deck
           data={DATA}
-          renderCard={this.renderCard}/>
+          renderCard={this.renderCard}
+          renderNoMoreCards={this.renderNoMoreCards}/>
         </View>
 
     );

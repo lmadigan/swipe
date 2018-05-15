@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { View, Animated,
   StyleSheet, Text,
-  PanResponder, Dimensions } from 'react-native';
+  PanResponder, Dimensions,
+  LayoutAnimation, UIManager } from 'react-native';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const MIN_TRESHOLD = 0.25 * SCREEN_WIDTH;
@@ -38,6 +39,13 @@ class Deck extends Component {
     });
 
     this.state = { panResponder, position, index: 0 };
+  }
+
+  componentWillUpdate() {
+    UIManager.setLayoutAnimationEnableExerimental &&
+    UIManager.setLayoutAnimationEnableExerimental(true);
+
+    LayoutAnimation.spring();
   }
 
   forceSwipe(direction) {
@@ -82,7 +90,7 @@ class Deck extends Component {
     if ( firstCard >= this.props.data.length ) {
       return this.props.renderNoMoreCards();
     }
-    
+
     return this.props.data.map((item, index) => {
       if (index < firstCard) {
         return null;
@@ -90,14 +98,21 @@ class Deck extends Component {
         return (
           <Animated.View
           key={item.id}
-          style={this.getCardStyle()}
+          style={[this.getCardStyle(), styles.cardStyle]}
           {...this.state.panResponder.panHandlers}>
             {this.props.renderCard(item)}
           </Animated.View>
         );
       }
-      return this.props.renderCard(item);
-    });
+      return (
+        <Animated.View key={item.id} style={[styles.cardStyle, {top: 10 * (index - this.state.index)} ]}>
+          { this.props.renderCard(item) }
+        </Animated.View>
+      );
+    }).reverse();
+
+    //transiting from wrapping an item in View component to wrapping and
+    // item in animated.view component causes flashing on screen
   }
 
   render() {
@@ -109,6 +124,12 @@ class Deck extends Component {
   }
 }
 
+const styles = {
+  cardStyle: {
+    position: 'absolute',
+    width: SCREEN_WIDTH
+  }
+};
 
 
 export default Deck;

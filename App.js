@@ -26,7 +26,15 @@ const DATA = [
 
 
 export default class App extends Component {
-  
+
+  onSwipeRight(item) {
+
+  }
+
+  onSwipeLeft(item) {
+    
+  }
+
   renderCard(item) {
     return (
       <Card
